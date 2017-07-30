@@ -1,9 +1,14 @@
 node{
+    tools {
+        maven 'M3'
+        jdk 'OpenJDK-1.8'
+    }
     stage('Checkout'){
-
+        git branch: env.BRANCH_NAME, credentialsId: 'fabiogoma', url: 'https://github.com/fabiogoma/GMTTIntakeAPI.git'
     }
     stage('Build'){
-
+        def mvnHome = tool 'M3'
+        sh "${mvnHome}/bin/mvn clean package"
     }
     stage('Deploy on Development'){
         //sudo runuser -l vagrant -c 'whoami'
