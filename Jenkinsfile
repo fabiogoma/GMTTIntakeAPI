@@ -5,6 +5,7 @@ node{
     stage('Build'){
         def mvnHome = tool 'M3'
         sh "${mvnHome}/bin/mvn clean package"
+        archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
     }
     stage('Deploy on Development'){
         sh "sudo runuser -l vagrant -c 'ansible all -m ping'"
