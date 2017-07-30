@@ -7,7 +7,7 @@ node{
         sh "${mvnHome}/bin/mvn clean package"
     }
     stage('Deploy on Development'){
-        sudo runuser -l vagrant -c 'whoami'
+        sh "sudo runuser -l vagrant -c 'whoami'"
     }
     stage('Deploy on Test'){
         //sudo runuser -l vagrant -c 'whoami'
