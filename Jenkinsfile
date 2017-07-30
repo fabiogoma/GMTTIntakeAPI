@@ -7,7 +7,7 @@ node{
         sh "${mvnHome}/bin/mvn clean package"
     }
     stage('Deploy on Development'){
-        sh "sudo runuser -l vagrant -c 'whoami'"
+        sh "sudo runuser -l vagrant -c 'ansible all -m ping'"
     }
     stage('Deploy on Test'){
         //sudo runuser -l vagrant -c 'whoami'
