@@ -46,7 +46,7 @@ def deployApp( environment ) {
     }
 
     if (didTimeout) {
-        currentBuild.result = 'ABORT'
+        currentBuild.result = 'ABORTED'
         echo "no input was received before timeout"
     } else if (userInput) {
         sh "sudo runuser -l vagrant -c 'ansible-playbook -i /home/vagrant/hosts --extra-vars \"deployment_environment=${environment} build_id=${env.BUILD_ID}\" deployment.yml'"
