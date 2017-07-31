@@ -10,7 +10,7 @@ node{
     stage('Deploy on Development'){
         findAndReplace = "sed -i.bak \'s/BUILD_ID/${BUILD_ID}/g\'"
 
-        sh "sudo runuser -l vagrant -c '${findAndReplace}' /home/vagrant/deployment.yml"
+        sh "sudo runuser -l vagrant -c \'${findAndReplace} /home/vagrant/deployment.yml\'"
         sh "sudo runuser -l vagrant -c 'ansible-playbook -i /home/vagrant/hosts --extra-vars \"deployment_environment=development\" deployment.yml'"
     }
     stage('Deploy on Test'){
