@@ -35,7 +35,7 @@ def deployApp( environment ) {
         def build = currentBuild.rawBuild
         def cause = build.getCause(hudson.model.Cause.UserIdCause.class)
         def name = cause.getUserName()
-        echo "User: " + name
+
         if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
             didTimeout = true
         } else {
@@ -51,6 +51,8 @@ def deployApp( environment ) {
     } else if (userInput) {
         sh "sudo runuser -l vagrant -c 'ansible-playbook -i /home/vagrant/hosts --extra-vars \"deployment_environment=${environment} build_id=${env.BUILD_ID}\" deployment.yml'"
     } else {
+        echo "Timeout: " + didTimeout
+        echo "User input: " + userInput
         echo "this was not successful"
         currentBuild.result = 'FAILURE'
     }
