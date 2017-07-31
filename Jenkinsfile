@@ -8,9 +8,9 @@ node{
         archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
     }
     stage('Deploy on Development'){
-        findAndReplace = "sed -i.bak \'s/BUILD_ID/${BUILD_ID}/g\' /home/vagrant/deployment.yml"
+        findAndReplace = "sed -i.bak \'s/BUILD_ID/${BUILD_ID}/g\'"
 
-        sh "sudo runuser -l vagrant -c '${findAndReplace}'"
+        sh "sudo runuser -l vagrant -c '${findAndReplace}' /home/vagrant/deployment.yml"
         sh "sudo runuser -l vagrant -c 'ansible-playbook -i /home/vagrant/hosts --extra-vars \"deployment_environment=development\" deployment.yml'"
     }
     stage('Deploy on Test'){
