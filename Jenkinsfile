@@ -25,7 +25,7 @@ def deployApp( environment ) {
     def userInput = true
 
     try {
-        timeout(time: 15, unit: 'SECONDS') { // change to a convenient timeout for you
+        timeout(time: 5, unit: 'MINUTES') { // change to a convenient timeout for you
             userInput = input(
                     id: 'Proceed1', message: 'Deploy this app right now?', parameters: [
                     [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm']
