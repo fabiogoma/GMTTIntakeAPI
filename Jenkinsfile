@@ -23,7 +23,7 @@ node{
 
 def deployApp( environment ) {
     def userInput = true
-    def didTimeout = false
+
     try {
         timeout(time: 15, unit: 'SECONDS') { // change to a convenient timeout for you
             userInput = input(
@@ -31,30 +31,14 @@ def deployApp( environment ) {
                     [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm']
             ])
         }
-    } catch(err) { // timeout reached or input false
-        def build = currentBuild.rawBuild
-        def cause = build.getCause(hudson.model.Cause.UserIdCause.class)
-        def name = cause.getUserName()
-
-        if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
-            didTimeout = true
-        } else {
-            userInput = false
-            echo "Aborted by: [${name}]"
-        }
-        err.printStackTrace()
+    } catch(err) {
+        echo err.getCause().toString()
+        currentBuild.result = 'ABORTED'
+        userInput = false
     }
 
-    if (didTimeout) {
-        currentBuild.result = 'ABORTED'
-        echo "no input was received before timeout"
-    } else if (userInput) {
+    if (userInput) {
         sh "sudo runuser -l vagrant -c 'ansible-playbook -i /home/vagrant/hosts --extra-vars \"deployment_environment=${environment} build_id=${env.BUILD_ID}\" deployment.yml'"
-    } else {
-        echo "Timeout: " + didTimeout
-        echo "User input: " + userInput
-        echo "this was not successful"
-        currentBuild.result = 'FAILURE'
     }
 
 }
